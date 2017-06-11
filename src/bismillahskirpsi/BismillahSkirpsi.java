@@ -45,10 +45,12 @@ public class BismillahSkirpsi {
         int[] volumeBarang = new int[]{0, 20, 25, 50, 2400, 400, 2500, 80, 28, 200, 450, 1000, 2400, 480, 40, 500, 220};
         int jumlahTujuan = 16, jumlahSales = 4, popSize = 6, maxGenerasi = 1;
         int maxBeratMuatan = 10, maxBeratMuatan2 = 1000, maxVolumeMuatan = 1200, maxVolumeMuatan2 = 2400;
-        double cr = 0.2, mr = 0.3;
+        double cr = 0.5, mr = 0.5;
+        long icr = Math.round(popSize * cr);
+        long imr = Math.round(popSize * mr);
         Random rand = new Random();
         double fitness;
-        String individu, segmen1, segmen2;
+        String individu, segmen1 = " ", segmen2 = " ";
         Populasi pop;
         int k = 0;
         ArrayList<Populasi> populasi = new ArrayList<>();
@@ -58,47 +60,40 @@ public class BismillahSkirpsi {
             System.out.println("PopSize " + (i + 1));
             int r = 0;
             int sales1, sales2, sales3, sales4;
-            int[] gen2 = new int[5];
-            int[] gen1 = new int[18];
+//            String cobaSegment1 = cobaSegment1();
+//            String cobaSegment2 = cobaSegment2();
+            int[] gen1 = new int[jumlahTujuan + 1];
+            int[] gen2 = new int[jumlahSales + 1];
+
             int N1 = jumlahTujuan;
-            for (int j = 1; j <= (jumlahSales); j++) {
+            for (int j = 1; j <= jumlahSales; j++) {
                 r = rand.nextInt(N1);
-                System.out.println("Random " + r);
+                //             System.out.println("Random " + r);
                 N1 -= r;
-                System.out.println("N1 " + N1);
+                //           System.out.println("N1 " + N1);
                 if (N1 >= 0 && j <= 3) {
                     gen2[j] = r;
-                    System.out.println("gen2 " + gen2[j]);
+                    //                System.out.println("gen2 " + gen2[j]);
                 } else if (j == 4) {
                     gen2[j] = N1 + r;
-                    System.out.println("j " + j);
+                    //              System.out.println("j " + j);
                 }
                 //   gen2[i + 1] = gen2[j];
                 System.out.println("Sales ke " + (j) + " mengunjungi ke " + gen2[j] + " tujuan");
-            }
-            ArrayList<Integer> saleske = new ArrayList<Integer>();
-            for (int j = 0; j < jumlahTujuan; j++) {
-                saleske.add(new Integer(j));
-            }
-            Collections.shuffle(saleske);
-            for (int j = 0; j < jumlahTujuan; j++) {
-                gen1[j] = saleske.get(j);
             }
             sales1 = gen2[1];
             sales2 = gen2[1] + gen2[2];
             sales3 = gen2[1] + gen2[2] + gen2[3];
             sales4 = gen2[1] + gen2[2] + gen2[3] + gen2[4];
-            k = 0;
             ArrayList<Integer> kotake = new ArrayList<Integer>();
-            for (int j = 0; j < jumlahTujuan; j++) {
+            for (int j = 1; j <= jumlahTujuan; j++) {
                 kotake.add(new Integer(j));
             }
-            Arrays.asList(N1);
             Collections.shuffle(kotake);
             for (int j = 0; j < jumlahTujuan; j++) {
                 gen1[j] = kotake.get(j);
             }
-            while (k <= jumlahTujuan) {
+            while (k < jumlahTujuan) {
                 if (k <= sales1) {
                     System.out.println("sales 1 " + gen1[k]);
                 } else if (k <= sales2) {
@@ -110,14 +105,17 @@ public class BismillahSkirpsi {
                 }
                 k++;
             }
-            segmen1 = String.valueOf("" + gen1[1] + " " + gen1[2] + " " + gen1[3] + " " + gen1[4]
-                    + " " + gen1[5] + " " + gen1[6] + " " + gen1[7] + " " + gen1[8]
-                    + " " + gen1[9] + " " + gen1[10] + " " + gen1[11] + " " + gen1[12]
-                    + " " + gen1[13] + " " + gen1[14] + " " + gen1[15] + " " + gen1[16]);
-            segmen2 = String.valueOf("" + gen2[1] + " " + gen2[2] + " " + gen2[3] + " " + gen2[4]);
-            System.out.println("Kromosom " + segmen1 + "\t\t" + segmen2);
+//            segmen1 = String.valueOf("" + gen1[0] + " " + gen1[1] + " " + gen1[2] + " " + gen1[3] + " " + gen1[4]
+//                    + " " + gen1[5] + " " + gen1[6] + " " + gen1[7] + " " + gen1[8]
+//                    + " " + gen1[9] + " " + gen1[10] + " " + gen1[11] + " " + gen1[12]
+//                    + " " + gen1[13] + " " + gen1[14] + " " + gen1[15]);
+//
+//            segmen2 = String.valueOf("" + gen2[1] + " " + gen2[2] + " " + gen2[3] + " " + gen2[4]);
+//            System.out.println("Kromosom " + segmen1 + "\t\t" + segmen2);
+            // fitness = hitungFitness(segmen1);
             pop = new Populasi(individu, segmen1, segmen2);
             populasi.add(pop);
+
             //   System.out.format("P" + (i + 1) + " gen2 " + gen2[1] + " gen2 " + gen2[2] + " gen2 " + gen2[3] + "gen2 " + gen2[4] + "\n");
         }
         //Populasi
@@ -125,11 +123,10 @@ public class BismillahSkirpsi {
 
         for (int i = 0; i < maxGenerasi; i++) {
             // cross over
-            System.out.println("======================ITERASI KE-" + i + "========================");
-            //           ArrayList<Populasi> reproduksi = new ArrayList<>(populasi);
-//            reproduksi = populasi.;
-            long icr = Math.round(popSize * cr);
-            long imr = Math.round(popSize * mr);
+            System.out.println("======================ITERASI KE-" + (i + 1) + "========================");
+            ArrayList<Populasi> reproduksi = new ArrayList<>(populasi);
+            //   reproduksi = populasi.;
+
             int randCr, p1random, p2random;
             String p1, p2, c1, c2, ps1, ps2;
             for (int j = 0; j < icr; j++) {
@@ -140,36 +137,69 @@ public class BismillahSkirpsi {
                 ps1 = populasi.get(p1random).getSegmen2();
                 ps2 = populasi.get(p2random).getSegmen2();
                 randCr = rand.nextInt(jumlahTujuan);
-
-                //potong
                 c1 = crossover(p1, p2);
                 System.out.println("p1 " + p1);
                 System.out.println("p2 " + p2);
                 System.out.println("Hasil Crossover " + c1);
-                //              System.out.println("array " + Arrays.asList(populasi));
+                pop = new Populasi("c", c1, ps1);
+                populasi.add(pop);
+//                Populasi anagen1 = new Populasi("c1", c1, ps1);
+//                reproduksi.add(anagen1);
 
-////                c1 = crossover(p1, p2);
-////                System.out.println("Hasil cross over " + c1);
-////                c1 = cekKromosom(c1);
-////                System.out.println("Hasil inject " + c1);
-////                Populasi anagen1 = new Populasi("c1", c1, hitungFitness(c1));
-////                reproduksi.add(anagen1);
             }
             // mutasi
-//            for (int j = 0; j < mr; j++) {
-//                p1 = populasi.get(rand.nextInt(popSize)).getKromosom();
-//                c2 = mutasi(p1);
-//                System.out.println("Hasil Mutasi " + c2);
-//                Populasi anagen2 = new Populasi("c1", c2, hitungFitness(c2));
+            int p1randomMutasi;
+            for (int j = 0; j < imr; j++) {
+                p1randomMutasi = rand.nextInt(popSize);
+                p1 = populasi.get(p1randomMutasi).getSegmen1();
+                ps1 = populasi.get(p1randomMutasi).getSegmen2();
+                c2 = mutasi(p1);
+                System.out.println("p1 " + p1);
+                System.out.println("Hasil Mutasi " + c2);
+                pop = new Populasi("c2", c2, ps1);
+                populasi.add(pop);
+//                Populasi anagen2 = new Populasi("c1", c2, ps1);
 //                reproduksi.add(anagen2);
-//            }
+
+            }
+            long coba = imr + icr;
+            int cekbanyak = (int) coba + popSize;
+            String cek = "";
+            // Populasi C = populasi.remove(1);
+            //    cek += populasi.get(1).getSegmen1();
+            for (int l = 0; l < populasi.size(); l++) {
+                cek += populasi.get(l);
+            }
+            System.out.println("Cek " + cek);
+            String stlhDiClear = "";
+            String ygDiHapus = "";
+            populasi.sort(new Populasi());
+            //    populasi.clear();
+            for (int j = 0; j < populasi.size(); j++) {
+                if (j < popSize) {
+                    stlhDiClear += populasi.get(j);
+                } else if (j > popSize && j < populasi.size()) {
+                    populasi.remove(j);
+                    // ygDiHapus += populasi.get(j);
+                }
+            }
+            System.out.println("stlhDiClear " + stlhDiClear);
+            System.out.println(" ygDiHapus " + ygDiHapus);
+            String ceklagi = "";
+            //    cek += populasi.get(1).getSegmen1();
+            for (int l = 0; l < popSize; l++) {
+                ceklagi += populasi.get(l).getSegmen1() + "\n";
+            }
+            System.out.println("CekLagi " + ceklagi);
+
 //            reproduksi.sort(new Populasi());
 //            populasi.clear();
 //            for (int j = 0; j < popSize; j++) {
 //                populasi.add(reproduksi.get(j));
 //            }
-//            System.out.println("Cek kromosom " + populasi.get(0).getKromosom());
+            //   System.out.println("Cek kromosom " + populasi.get(0).getKromosom());
         }
+
     }
 
     private static String crossover(String p1, String p2) {
@@ -179,9 +209,9 @@ public class BismillahSkirpsi {
         int o = 0;
         String parent1[] = p1.split(" ");
         int randCros = rand.nextInt(16);
-        for (int i = 0; i < parent1.length; i++) {
-            System.out.println("paren 1 " + parent1[i]);
-        }
+//        for (int i = 0; i < parent1.length; i++) {
+//            System.out.println("paren 1 " + parent1[i]);
+//        }
         for (int i = 0; i < parent1.length; i++) {
             o++;
             if (o == randCros) {
@@ -199,136 +229,89 @@ public class BismillahSkirpsi {
                             potongan += parent1[k] + " ";
                         }
                     }
-                    System.out.println("p1 " + p1);
-                    System.out.println("Potongan " + potongan);
+//                    System.out.println("p1 " + p1);
+//                    System.out.println("Potongan " + potongan);
                 }
             }
         }
         //tempel potongan
-        String potongan2 = "";
-        int randCros2 = rand.nextInt(16);
         String parent2[] = p2.split(" ");
-        String p1Tambah[] = p1.split(" ");
-        System.out.println("p2 " + p2);
-        o = p1Tambah.length;
-        int g = 0;
+        String p1Tambah[] = potongan.split(" ");
+        String pcoba = "";
+        //    System.out.println("p2 " + p2);
         for (int i = 0; i < parent2.length; i++) {
-            o++;
-//            String p1temp = p1Tambah[i].equals(parent2[i]);
-//            stringMatch cek = new StringMatch();
             for (int j = 0; j < p1Tambah.length; j++) {
                 boolean cek = parent2[i].equals(p1Tambah[j]);
                 if (cek == true) {
- //                   g = 0;
-                    //       System.out.println("Ada " + parent2[j]);
-                } else {
-                    g++;
-                    if (g > p1Tambah.length) {
-                        System.out.print(" " + parent2[j]);
-                        g = 0;
-                    }
-                    //    System.out.println("Ada Lain " + parent2[j]);
+                    //     System.out.print(" " + parent2[i]);
+                    pcoba += parent2[i] + " ";
                 }
             }
 
         }
-        System.out.println("Offspring 1 " + p1);
-        System.out.println("Offspring 2 " + (potongan + p2));
-        System.out.println("Potongan lagi " + potongan);
-        for (int i = 0; i < parent2.length; i++) {
-            o++;
-            if (o == randCros2) {
-                if (o == 16) {
-                    potongan2 = p2 + " ";
-                    p2 = "";
-                } else if (o <= 16) {
-                    int awal = i - 16;
-                    int akhir = i;
-                    p2 = "";
-                    for (int k = 0; k < parent2.length; k++) {
-                        if (k >= awal && k <= akhir) {
-                            p2 += parent2[k] + " ";
-                        } else {
-                            potongan2 += parent2[k] + " ";
-                        }
-                    }
-                    System.out.println("p2 " + p2);
-                    System.out.println("Potongan " + potongan2);
-                }
-            }
-        }
+        //     System.out.println("Offspring " + p1 + pcoba);
+        p2 = p1 + pcoba;
         return p2;
 
     }
 
-//        int r2, l = 1;
-//        int[] gen1 = new int[18];
-//        r2 = rand.nextInt(jumlahTujuan);
-//        while (l <= jumlahTujuan) {
-//            if (gen1[l] == r2) {
-//                r2 = rand.nextInt(jumlahTujuan);
-//            } else {
-//                gen1[k] = r2;
-//                break;
-//            }
-//            l++;
+    private static String mutasi(String p1) {
+        Random rand = new Random();
+        String ambilGen1 = "";
+        String ambilGen2 = "";
+        String tampung = "";
+        int o = 0;
+        String parent1[] = p1.split(" ");
+        int randMut1 = rand.nextInt(16);
+        int randMut2 = rand.nextInt(16);
+//        for (int i = 0; i < parent1.length; i++) {
+//            System.out.print(" " + parent1[i]);
 //        }
-//        System.out.println(" " + gen1[k]);
-//        // Iterasi
-//        for (int i = 0; i < iterasi; i++) {
-//            // cross over
-//            System.out.println("======================ITERASI KE-" + i + "========================");
-//            ArrayList<Populasi> reproduksi = new ArrayList<>(populasi);
-////            reproduksi = populasi.;
-//            int ipc = Math.round(popsize * pc);
-//            int ipm = Math.round(popsize * pm);
-//            String p1, p2, c1, c2;
-//            for (int j = 0; j < ipc; j++) {
-//                p1 = populasi.get(rand.nextInt(popsize)).getKromosom();
-//                p2 = populasi.get(rand.nextInt(popsize)).getKromosom();
-//                c1 = crossover(p1, p2);
-//                System.out.println("Hasil cross over " + c1);
-//                c1 = cekKromosom(c1);
-//                System.out.println("Hasil inject " + c1);
-//                Populasi anagen1 = new Populasi("c1", c1, hitungFitness(c1));
-//                reproduksi.add(anagen1);
-//            }
-//            // mutasi
-//            for (int j = 0; j < ipm; j++) {
-//                p1 = populasi.get(rand.nextInt(popsize)).getKromosom();
-//                c2 = mutasi(p1);
-//                System.out.println("Hasil Mutasi " + c2);
-//                Populasi anagen2 = new Populasi("c1", c2, hitungFitness(c2));
-//                reproduksi.add(anagen2);
-//            }
-//            reproduksi.sort(new Populasi());
-//            populasi.clear();
-//            for (int j = 0; j < popsize; j++) {
-//                populasi.add(reproduksi.get(j));
-//            }
-//            System.out.println("Cek kromosom " + populasi.get(0).getKromosom());
+        ambilGen1 = parent1[randMut1];
+        tampung = parent1[randMut1];
+        ambilGen2 = parent1[randMut2];
+        parent1[randMut1] = parent1[randMut2];
+        parent1[randMut2] = tampung;
+        System.out.println("\n");
+//        System.out.println("Ambil gen 1 " + ambilGen1);
+//        System.out.println("Ambil gen 2 " + ambilGen2);
+//        System.out.println("Tampung " + tampung);
+        System.out.println("Swap gen " + ambilGen1 + " dengan " + ambilGen2);
+        p1 = "";
+        for (int j = 0; j < parent1.length; j++) {
+            // System.out.print(" " + parent1[i]);
+            p1 += parent1[j] + " ";
+        }
+        //  System.out.println("p1 " + p1);
+        return p1;
+    }
+
+//    private static String cobaSegment1() {
+//        String segmen1 = "";
+//        int jumlahTujuan = 16;
+//        int[] gen1 = new int[jumlahTujuan + 1];
+//        ArrayList<Integer> kotake = new ArrayList<Integer>();
+//        for (int j = 1; j <= jumlahTujuan; j++) {
+//            kotake.add(new Integer(j));
 //        }
-//
-//        model2.setValueAt("P1", 0, 0);
-//        model2.setValueAt(populasi.get(0).getKromosom(), 0, 1);
-//        model2.setValueAt(String.format("%.10f", populasi.get(0).getFitness()), 0, 2);
-//        populasi.clear();
-//        terbaik.setModel(model2);
-//        terbaik.getColumnModel().getColumn(0).setPreferredWidth(120);
-//        terbaik.getColumnModel().getColumn(1).setPreferredWidth(500);
-//        terbaik.getColumnModel().getColumn(2).setPreferredWidth(250);
-//        terbaik.setRowHeight(0, 45);
-//        for (int i = 1; i < 6; i++) {
-//
+//        Collections.shuffle(kotake);
+//        for (int j = 0; j < jumlahTujuan; j++) {
+//            gen1[j] = kotake.get(j);
 //        }
-//        System.out.println("Jarak " + (jarak[0][8] + jarak[0][8]) + " Berat " + beratBarang[5] + " Volume " + volumeBarang[5]);
-//
+//        return segmen1;
 //    }
 //
-//    public double hitungFitness(String kromosom) {
-//        // hitung fitness kromosom
-//        long hasil, selisih;
-//        double fitness, total = 0;
+//    private static String cobaSegment2() {
+//        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+//    }
+
+    public double hitungFitness(String tujuan) {
+        // hitung fitness kromosom
+        long hasil, selisih;
+        double fitness, total = 0;
+        for (int i = 0; i < 10; i++) {
+
+        }
 //        int[][] datamasukan = new int[datalatih.length][datalatih[0].length - 1];
 //        for (int i = 0; i < datalatih.length; i++) {
 //            for (int j = 0; j < datalatih[0].length - 1; j++) {
@@ -345,325 +328,11 @@ public class BismillahSkirpsi {
 //            total += selisih;
 //            System.out.println(kromosom + "\t" + hasil + "\t" + selisih);
 //        }
-//        fitness = 1 / (1 + total);
+        fitness = 1 / (1 + total);
 //        System.out.println("Total " + total);
 //        System.out.println("Fitness " + String.format("%.10f", fitness));
-//        return fitness;
-//    }
-//
-//    public static int randomInisialisasi(int segmen1, int segmen2) {
-//        int hasil = 0;
-//        Random rand = new Random();
-//        for (int i = 0; i < 10; i++) {
-//
-//        }
-//        // inisialisasi operator
-//        String[] operator = {"+", "-", "*", "/"};
-//        // inisialisasi terminal
-//        String[] terminal = new String[5];
-//        String[] tampungan = {"x1", "x2", "x3", "x4", "0"};
-//        tampungan[tampungan.length - 1] = String.valueOf(rand.nextInt(100) + 1);
-//
-//        ArrayList<Integer> random = new ArrayList<Integer>();
-//        for (int r = 0; r < tampungan.length; r++) {
-//            random.add(new Integer(r));
-//        }
-//        Collections.shuffle(random);
-//        for (int j = 0; j < tampungan.length; j++) {
-//            terminal[j] = tampungan[(int) random.get(j)];
-//        }
-//
-//        // buat postfix random
-//        int A = 0;
-//        int O = 0;
-//        for (int i = 0; i < ((operator.length + terminal.length)); i++) {
-//            if (i < 2) {
-//                hasil += terminal[A] + " ";
-//                A++;
-//            } else if (i == (operator.length + terminal.length) - 1) {
-//                hasil += operator[rand.nextInt(4)];
-//            } else if (A >= terminal.length) {
-//                hasil += operator[rand.nextInt(4)] + " ";
-//                O++;
-//            } else if (A == (O + 1)) {
-//                hasil += terminal[A] + " ";
-//                A++;
-//            } else if ((rand.nextInt(2) + 1) % 2 == 1) {
-//                hasil += operator[rand.nextInt(4)] + " ";
-//                O++;
-//            } else {
-//                hasil += terminal[A] + " ";
-//                A++;
-//            }
-//        }
-//        return hasil;
-//    }
-//
-//    public String mutasi(String cek) {
-//        Random rand = new Random();
-//        String hasil = "";
-//        String[] operator = {"+", "-", "*", "/"};
-//        int jmlop = 0, o = 0;
-//        String[] krom = cek.split(" ");
-//        for (int i = 0; i < krom.length; i++) {
-//            if (krom[i].equals("+") || krom[i].equals("-") || krom[i].equals("*") || krom[i].equals("/")) {
-//                jmlop++;
-//            }
-//        }
-//        int random = rand.nextInt(jmlop) + 1;
-//        for (int i = 0; i < krom.length; i++) {
-//            if (krom[i].equals("+") || krom[i].equals("-") || krom[i].equals("*") || krom[i].equals("/")) {
-//                o++;
-//                if (o == random) {
-//                    krom[i] = operator[rand.nextInt(4)];
-//                }
-//            }
-//            if (i == krom.length - 1) {
-//                hasil += krom[i];
-//            } else {
-//                hasil += krom[i] + " ";
-//            }
-//        }
-//        return hasil;
-//    }
-//
-//    public String crossover(String p2, String p1) {
-//        // ambil potongan ke 1
-//        Random rand = new Random();
-//        String potongan = "";
-//        String[] ar = p1.split(" ");
-//        int a = 0;
-//        int o = 0;
-//        int jmlop = 0;
-//        for (int i = 0; i < ar.length; i++) {
-//            if (ar[i].equals("+") || ar[i].equals("-") || ar[i].equals("*") || ar[i].equals("/")) {
-//                jmlop++;
-//            }
-//        }
-//        int random = rand.nextInt(jmlop) + 1;
-//        for (int i = 0; i < ar.length; i++) {
-//            if (ar[i].equals("+") || ar[i].equals("-") || ar[i].equals("*") || ar[i].equals("/")) {
-//                o++;
-//                if (o == random) {
-//                    if (i == ar.length - 1) {
-//                        potongan = p1 + " ";
-//                        p1 = "";
-//                    } else if (ar[i - 1].equals("+") || ar[i - 1].equals("-") || ar[i - 1].equals("*") || ar[i - 1].equals("/")) {
-////                        System.out.println("potong o.leng + 1 angka");
-//                        if (!ar[i - 2].equals("+") && !ar[i - 2].equals("-") && !ar[i - 2].equals("*") && !ar[i - 2].equals("/")
-//                                && !ar[i - 3].equals("+") && !ar[i - 3].equals("-") && !ar[i - 3].equals("*") && !ar[i - 3].equals("/")
-//                                && !ar[i - 4].equals("+") && !ar[i - 4].equals("-") && !ar[i - 4].equals("*") && !ar[i - 4].equals("/")) {
-//                            int awal = i - 4;
-//                            int akhir = i;
-//                            p1 = "";
-//                            for (int k = 0; k < ar.length; k++) {
-//                                if (k >= awal && k <= akhir) {
-//                                    potongan += ar[k] + " ";
-//                                } else {
-//                                    p1 += ar[k] + " ";
-//                                }
-//                            }
-//                        } else {
-//                            int aaa = 0;
-//                            for (int j = i - 1; j >= 0; j--) {
-//                                if (ar[j].equals("+") || ar[j].equals("-") || ar[j].equals("*") || ar[j].equals("/")) {
-//                                } else {
-//                                    aaa++;
-//                                }
-//                                if (aaa == o + 1) {
-//                                    int awal = j;
-//                                    int akhir = i;
-//                                    p1 = "";
-//                                    for (int k = 0; k < ar.length; k++) {
-//                                        if (k >= awal && k <= akhir) {
-//                                            potongan += ar[k] + " ";
-//                                        } else {
-//                                            p1 += ar[k] + " ";
-//                                        }
-//                                    }
-//                                }
-//                            }
-//                        }
-//                    } else if (ar[i - 2].equals("+") || ar[i - 2].equals("-") || ar[i - 2].equals("*") || ar[i - 2].equals("/")) {
-////                        System.out.println("potong 3 angka");
-//                        if ((ar[i - 3].equals("+") || ar[i - 3].equals("-") || ar[i - 3].equals("*") || ar[i - 3].equals("/"))
-//                                || (ar[i - 4].equals("+") || ar[i - 4].equals("-") || ar[i - 4].equals("*") || ar[i - 4].equals("/"))) {
-////                            System.out.println("potong o.leng + 1 angka");
-//                            int aaa = 0;
-//                            for (int j = i - 1; j >= 0; j--) {
-//                                if (ar[j].equals("+") || ar[j].equals("-") || ar[j].equals("*") || ar[j].equals("/")) {
-//                                } else {
-//                                    aaa++;
-//                                }
-//                                if (aaa == o + 1) {
-//                                    int awal = j;
-//                                    int akhir = i;
-//                                    p1 = "";
-//                                    for (int k = 0; k < ar.length; k++) {
-//                                        if (k >= awal && k <= akhir) {
-//                                            potongan += ar[k] + " ";
-//                                        } else {
-//                                            p1 += ar[k] + " ";
-//                                        }
-//                                    }
-//                                }
-//                            }
-//                        } else {
-//                            p1 = "";
-//                            int awal = i - 4;
-//                            int akhir = i;
-//                            p1 = "";
-//                            for (int k = 0; k < ar.length; k++) {
-//                                if (k >= awal && k <= akhir) {
-//                                    potongan += ar[k] + " ";
-//                                } else {
-//                                    p1 += ar[k] + " ";
-//                                }
-//                            }
-//                        }
-//
-//                    } else {
-////                        System.out.println("potong 2 angka");
-//                        potongan = ar[i - 2] + " " + ar[i - 1] + " " + ar[i] + " ";
-//                        ar[i - 2] = "";
-//                        ar[i - 1] = "";
-//                        ar[i] = "";
-//                        p1 = "";
-//                        for (int j = 0; j < ar.length; j++) {
-//                            if (ar[j].equals("")) {
-//                                p1 += ar[j];
-//                            } else {
-//                                p1 += ar[j] + " ";
-//                            }
-//                        }
-//                    }
-//                    System.out.println(potongan);
-//                    System.out.println(p1);
-//                }
-//            }
-//        }
-//        // tempel potongan ke 2
-//        String potongan2 = "";
-//        int random2 = rand.nextInt(4) + 1;
-//        ar = p2.split(" ");
-//        a = 0;
-//        o = 0;
-//        for (int i = 0; i < ar.length; i++) {
-//            if (ar[i].equals("+") || ar[i].equals("-") || ar[i].equals("*") || ar[i].equals("/")) {
-//                o++;
-//                if (o == random2) {
-//                    if (i == ar.length - 1) {
-//                        potongan2 = p2;
-//                        p2 = potongan;
-//                    } else if (ar[i - 1].equals("+") || ar[i - 1].equals("-") || ar[i - 1].equals("*") || ar[i - 1].equals("/")) {
-////                        System.out.println("potong o.leng + 1 angka");
-//                        if (!ar[i - 2].equals("+") && !ar[i - 2].equals("-") && !ar[i - 2].equals("*") && !ar[i - 2].equals("/")
-//                                && !ar[i - 3].equals("+") && !ar[i - 3].equals("-") && !ar[i - 3].equals("*") && !ar[i - 3].equals("/")
-//                                && !ar[i - 4].equals("+") && !ar[i - 4].equals("-") && !ar[i - 4].equals("*") && !ar[i - 4].equals("/")) {
-//                            int awal = i - 4;
-//                            int akhir = i;
-//                            p1 = "";
-//                            for (int k = 0; k < ar.length; k++) {
-//                                if (k >= awal && k <= akhir) {
-//                                    if (k == akhir) {
-//                                        p2 += potongan;
-//                                    }
-//                                    potongan2 += ar[k] + " ";
-//                                } else {
-//                                    p2 += ar[k] + " ";
-//                                }
-//                            }
-//                        } else {
-//                            int aaa = 0;
-//                            for (int j = i - 1; j >= 0; j--) {
-//                                if (ar[j].equals("+") || ar[j].equals("-") || ar[j].equals("*") || ar[j].equals("/")) {
-//                                } else {
-//                                    aaa++;
-//                                }
-//                                if (aaa == o + 1) {
-//                                    int awal = j;
-//                                    int akhir = i;
-//                                    p2 = "";
-//                                    for (int k = 0; k < ar.length; k++) {
-//                                        if (k >= awal && k <= akhir) {
-//                                            if (k == akhir) {
-//                                                p2 += potongan;
-//                                            }
-//                                            potongan2 += ar[k] + " ";
-//
-//                                        } else {
-//                                            p2 += ar[k] + " ";
-//                                        }
-//                                    }
-//                                }
-//                            }
-//                        }
-//                    } else if (ar[i - 2].equals("+") || ar[i - 2].equals("-") || ar[i - 2].equals("*") || ar[i - 2].equals("/")) {
-////                        System.out.println("potong 3 angka");
-//                        if ((ar[i - 3].equals("+") || ar[i - 3].equals("-") || ar[i - 3].equals("*") || ar[i - 3].equals("/"))
-//                                || (ar[i - 4].equals("+") || ar[i - 4].equals("-") || ar[i - 4].equals("*") || ar[i - 4].equals("/"))) {
-////                            System.out.println("potong o.leng + 1 angka");
-//                            int aaa = 0;
-//                            for (int j = i - 1; j >= 0; j--) {
-//                                if (ar[j].equals("+") || ar[j].equals("-") || ar[j].equals("*") || ar[j].equals("/")) {
-//                                } else {
-//                                    aaa++;
-//                                }
-//                                if (aaa == o + 1) {
-//                                    int awal = j;
-//                                    int akhir = i;
-//                                    p2 = "";
-//                                    for (int k = 0; k < ar.length; k++) {
-//                                        if (k >= awal && k <= akhir) {
-//                                            if (k == akhir) {
-//                                                p2 += potongan;
-//                                            }
-//                                            potongan2 += ar[k] + " ";
-//                                        } else {
-//                                            p2 += ar[k] + " ";
-//                                        }
-//                                    }
-//                                }
-//                            }
-//                        } else {
-//                            p2 = "";
-//                            int awal = i - 4;
-//                            int akhir = i;
-//                            p2 = "";
-//                            for (int k = 0; k < ar.length; k++) {
-//                                if (k >= awal && k <= akhir) {
-//                                    if (k == akhir) {
-//                                        p2 += potongan;
-//                                    }
-//                                    potongan2 += ar[k] + " ";
-//                                } else {
-//                                    p2 += ar[k] + " ";
-//                                }
-//                            }
-//                        }
-//
-//                    } else {
-////                        System.out.println("potong 2 angka");
-//                        potongan2 = ar[i - 2] + " " + ar[i - 1] + " " + ar[i];
-//                        ar[i - 2] = "";
-//                        ar[i - 1] = "";
-//                        ar[i] = potongan;
-//                        p2 = "";
-//                        for (int j = 0; j < ar.length; j++) {
-//                            if (ar[j].equals("")) {
-//                                p2 += ar[j];
-//                            } else if (ar[j].equals(potongan)) {
-//                                p2 += ar[j];
-//                            } else {
-//                                p2 += ar[j] + " ";
-//                            }
-//                        }
-//                    }
-//                    System.out.println(potongan2);
-//                    System.out.println(p2);
-//                }
-//            }
-//
-//        }
-//        return p2;
+        return fitness;
+    }
+
+
 }
