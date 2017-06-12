@@ -372,7 +372,6 @@ public class BismillahSkirpsi {
 //            }
             //   System.out.println("Cek kromosom " + populasi.get(0).getKromosom());
         }
-
     }
 
     private static String crossover(String p1, String p2) {
