@@ -355,9 +355,7 @@ public class BismillahSkirpsi {
             segmen2Terbaik = populasi.get(0).getSegmen2();
             String[] segmen1TerbaikSplit = segmen1Terbaik.split(" ");
             String[] segmen2TerbaikSplit = segmen2Terbaik.split(" ");
-            if (segmen1TerbaikSplit.equals(1)) {
-                System.out.println("Randuagung");
-            }
+
             System.out.println("Coba Kota " + populasi.get(0).getSegmen1());
 
             String ceklagi = "";
